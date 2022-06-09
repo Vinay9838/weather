@@ -1,0 +1,153 @@
+<!--inherits the layout-->
+{% extends 'index.html' %}
+{% load crispy_forms_tags %}
+<!--passes the page title-->
+{% block title %}{{page_title}}{% endblock title %}
+<!--content starts-->
+{% block content %}
+<style>
+    .forecast-container{
+    align-items: center;
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    margin-right: 24px;
+    }
+    .temp {
+      font-size: 60px;
+    font-weight: 400;
+    letter-spacing: -.7px;
+    line-height: 1.07;
+    }
+    .after-temp {
+        font-size: 24px;
+        line-height: 1.28;
+    margin-left: -24px;
+    opacity: .6;
+    }
+</style>
+ <div class="container mt-2 pt-2">
+     <div class="bg-white p-2">
+         <form method="post">
+         {%csrf_token%}
+             <div class="row">
+                 {%for field in form%}
+                 <div class="col-md-10">
+                     {{field|as_crispy_field}}
+                 </div>
+                 {%endfor%}
+                 <div class="col-md-2 pt-2 mt-4">
+                     <button class="btn btn-primary">Search</button>
+                 </div>
+             </div>
+     </form>
+     </div>
+</div>
+<div class="container mt-2">
+
+    <div id="carouselWeather" class="carousel slide" data-ride="carousel" style="width:50%;height:80vh;margin: auto;">
+  <ol class="carousel-indicators">
+      {%for row in forecast%}
+    <li data-target="#carouselWeather" data-slide-to="{{forloop.counter0}}" class="{%if forloop.first%}active{%endif%}"></li>
+      {%endfor%}
+
+  </ol>
+  <div class="carousel-inner">
+      {%for row in forecast%}
+    <div class="carousel-item {%if forloop.first%}active{%endif%}">
+        <div class="card {{row.font}}" style="background-image: url({{row.link}});background-repeat: no-repeat, repeat;background-size: cover;">
+            <div class="card-body">
+                <h5 class="card-title rounded border border-white" style="height:15vh;">
+                    <div class="h4 p-2"><i class="fa-solid fa-mountain-city {{row.font}}"></i> &nbsp;{{city.name}},{{city.country}} &nbsp;</div>
+                    <div class="h6 p-2">
+                        <span title="sunrise"><i class="fa-solid fa-mountain-sun {{row.font}}"></i>&nbsp; {{city.sunrise|time}}</span>
+                        <span title="sunset"><i class="fa-solid fa-cloud-sun {{row.font}}"></i>&nbsp; {{city.sunset|time}}</span>
+                        <span title="population"><i class="fa-solid fa-people-group {{row.font}}"></i>&nbsp;{{city.population}}</span>
+                    </div>
+                </h5>
+                <div class="d-flex justify-content-between flex-column">
+                    <div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 class="font-weight-bold">{{row.description|title}}</h5>
+                                <p class="font-weight-bold">{{row.datetime}}</p>
+                                <div class="forecast-container">
+                                    <i class="fa-solid fa-cloud-sun {{row.font}} fa-2x"></i>
+                                    <div class="temp">{{row.temp_min}}/{{row.temp_max}}&#176;C</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 table-responsive-sm mx-auto mt-2 pt-2">
+                                <table class="table {{row.font}}">
+                                    <tbody>
+                                    <tr>
+                                        <td>Pressure <span class="float-right">{{row.pressure}}hPa</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Humidity <span class="float-right">{{row.humidity}}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Wind Speed <span class="float-right">{{row.wind.speed}}km/h</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Rain <span class="float-right">{%if row.rain%}{{row.rain}}{%else%}0{%endif%}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Visibility <span class="float-right">{{row.visibility}}</span></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+      {%endfor%}
+  </div>
+  <a class="carousel-control-prev" href="#carouselWeather" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselWeather" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+</div>
+
+
+{% endblock content %}
+{% block js %}
+<script>
+document.getElementById("wrapper-bg").style.backgroundImage =
+"url('https://mdbgo.io/ascensus/mdb-advanced/img/snow.gif')";
+break;
+case "Clouds":
+document.getElementById("wrapper-bg").style.backgroundImage =
+"url('https://mdbgo.io/ascensus/mdb-advanced/img/clouds.gif')";
+break;
+case "Fog":
+document.getElementById("wrapper-bg").style.backgroundImage =
+"url('https://mdbgo.io/ascensus/mdb-advanced/img/fog.gif')";
+break;
+case "Rain":
+document.getElementById("wrapper-bg").style.backgroundImage =
+"url('https://mdbgo.io/ascensus/mdb-advanced/img/rain.gif')";
+break;
+case "Clear":
+document.getElementById("wrapper-bg").style.backgroundImage =
+"url('https://mdbgo.io/ascensus/mdb-advanced/img/clear.gif')";
+break;
+case "Thunderstorm":
+document.getElementById("wrapper-bg").style.backgroundImage =
+"url('https://mdbgo.io/ascensus/mdb-advanced/img/thunderstorm.gif')";
+break;
+default:
+document.getElementById("wrapper-bg").style.backgroundImage =
+"url('https://mdbgo.io/ascensus/mdb-advanced/img/clear.gif')";
+break;
+</script>
+{% endblock js %}
+
+
