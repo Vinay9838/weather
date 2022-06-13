@@ -41,3 +41,8 @@ WEATHER_API_KEY=4297c971407f29ca2f
 ---
 Once the setup done, run your server  `./manage.py runserver` . You will be able to search the weather forecasting
 citywise . Forecasting data will be of next 5 days 3 hours basis.
+
+### Result
+
+
+![Weather GIF](https://github.com/Vinay9838/weather/blob/master/static/assets/image/weather.gif?raw=true)
