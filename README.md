@@ -7,8 +7,8 @@
 ### Activate virtual environment
 
 ````shell
-virtualenv -p python3 /home/todos/waether-env
-source /home/todos/todos-env/bin/activate
+virtualenv -p python3 /home/weather/weather-env
+source /home/weather/weather-env/bin/activate
 ````
 
 ### Application dependencies
